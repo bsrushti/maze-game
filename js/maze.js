@@ -2,7 +2,7 @@ const withTag = function(tag, content) {
   return ["<", tag, ">", content, "</", tag, ">"].join("");
 };
 
-const createTable = function(document, size) {
+const createTableBody = function(size) {
   let tableRow = [];
   let td = "";
   for (let rowIndex = 0; rowIndex < size; rowIndex++) {
@@ -12,10 +12,12 @@ const createTable = function(document, size) {
     tableRow.push(withTag("tr", td));
     td = "";
   }
-  document.getElementById("maze").innerHTML = withTag(
-    "tbody",
-    tableRow.join("\n")
-  );
+  return tableRow.join("");
+};
+
+const insertTableBody = function(document) {
+  let tbody = createTableBody(5);
+  document.getElementById("maze").innerHTML = withTag("tbody", tbody);
 };
 
 const actualPath = function() {
@@ -34,13 +36,13 @@ const actualPath = function() {
 };
 
 const highLightPath = function(document, path) {
-  for (i of path) {
-    document.getElementById(i).style.backgroundColor = "rgb(211,211,211)";
-  }
+  path.map(
+    x => (document.getElementById(x).style.backgroundColor = "rgb(211,211,211)")
+  );
 };
 
 const start = function() {
   let path = actualPath();
-  createTable(document, 5);
+  insertTableBody(document);
   highLightPath(document, path);
 };
